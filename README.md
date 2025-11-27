@@ -15,6 +15,9 @@ This repository contains the code for an ADK-based multi-agent radiology assista
 4. 3. Run inference:
 python src/inference.py --input PATH/TO/IMAGES --output submission.csv
 
+Model available in Releases.
+
+
 ## Author
 Reihan Alinia Lat
 

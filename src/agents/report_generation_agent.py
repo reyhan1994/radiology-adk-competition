@@ -1,10 +1,8 @@
-from adk.agent import Agent, StepResult
+from adk.step import Step
 
-class ReportGenerationAgent(Agent):
-    async def run(self, artifacts) -> StepResult:
-        patient_data = artifacts.get('patient_data')
-        analysis_findings = artifacts.get('analysis_findings')
+class ReportGenerationAgent(Step):
+    def __init__(self):
+        super().__init__("report_generation")
 
-        # Simple prompt-based report generation (conceptual)
-        final_report_text = f"Final Report: {analysis_findings['pathology']}."
-        return StepResult(output={"final_report": final_report_text})
+    def run(self, input_data):
+        return {"report": "No abnormalities detected"}

@@ -18,7 +18,8 @@ python src/master_agent.py --input PATH_TO_IMAGES --output submission.csv
 
 
 ## 📁 Repository Structure
-```root/
+```
+root/
 │
 ├── README.md
 ├── requirements.txt

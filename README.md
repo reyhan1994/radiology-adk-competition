@@ -7,7 +7,7 @@ A conceptual multi-agent AI system for radiology image analysis, report generati
 - Supports Function Tools, Agent Tools, Long-Running Operations (LRO), LLM-as-tool, Agent-to-Agent communication, and memory consolidation  
 - Workflow: patient history → image analysis → report generation → pathology coding → memory storage  
 
-## 🧰 Quick Start (for Kaggle / Local Use)
+## 🧰 Quick Start 
 ```bash
 # 1. Install dependencies
 pip install -r requirements.txt

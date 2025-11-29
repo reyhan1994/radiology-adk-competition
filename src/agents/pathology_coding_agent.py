@@ -1,11 +1,9 @@
-from adk.agent import Agent, StepResult
+from adk.step import Step
 
-class PathologyCodingAgent(Agent):
-    async def run(self, artifacts) -> StepResult:
-        final_report = artifacts.get('final_report')
+class PathologyCodingAgent(Step):
+    def __init__(self):
+        super().__init__("pathology_coding")
 
-        coding_result = {}
-        if "Pneumothorax" in final_report:
-            coding_result = {"ICD_10_Code": "J93.9", "CPT_Code": "71045"}
+    def run(self, input_data):
+        return {"icd10": "R93.8"}
 
-        return StepResult(output={"coding_result": coding_result})

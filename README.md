@@ -1,24 +1,33 @@
-# AI Radiologist Assistant (ADK Course Project)
+# AI Radiologist Assistant Agent (ADK-based)
 
-This repository contains the code for an ADK-based multi-agent radiology assistant created for a Kaggle competition submission.
+A conceptual multi-agent AI system for radiology image analysis, report generation, and automatic coding — implemented as part of the ADK Agents Intensive Course.
 
-## File structure
-- `src/inference.py` – main inference script
-- `notebooks/inference.ipynb` – Kaggle notebook
-- `requirements.txt`
-- `README.md`
+## ⭐ Overview
+- Multi-agent architecture using `SequentialAgent`  
+- Supports Function Tools, Agent Tools, Long-Running Operations (LRO), LLM-as-tool, Agent-to-Agent communication, and memory consolidation  
+- Workflow: patient history → image analysis → report generation → pathology coding → memory storage  
 
-## Usage (Kaggle)
-1. Upload this repository to your Kaggle Notebook
-2. Install dependencies:
-3. pip install -r requirements.txt
-4. 3. Run inference:
-python src/inference.py --input PATH/TO/IMAGES --output submission.csv
+## 🧰 Quick Start (for Kaggle / Local Use)
+```bash
+# 1. Install dependencies
+pip install -r requirements.txt
 
-Model available in Releases.
+# 2. Run inference (replace PATH_TO_IMAGES with your data folder)
+python src/master_agent.py --input PATH_TO_IMAGES --output submission.csv
+## 📁 Repository Structure
+root/
+│
+├── README.md
+├── requirements.txt
+├── .gitignore
+└── src/
+    ├── agents/
+    │   ├── patient_context_agent.py
+    │   ├── image_analysis_agent.py
+    │   ├── report_generation_agent.py
+    │   ├── pathology_coding_agent.py
+    │   └── memory_consolidation_agent.py
+    └── master_agent.py
 
-
-## Author
-Reihan Alinia Lat
 
 

@@ -18,7 +18,7 @@ python src/master_agent.py --input PATH_TO_IMAGES --output submission.csv
 
 
 ## 📁 Repository Structure
-root/
+```root/
 │
 ├── README.md
 ├── requirements.txt
@@ -31,6 +31,7 @@ root/
     │   ├── pathology_coding_agent.py
     │   └── memory_consolidation_agent.py
     └── master_agent.py
+```
 
 
 

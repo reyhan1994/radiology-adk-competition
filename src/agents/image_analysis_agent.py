@@ -1,13 +1,8 @@
-import time
-from adk.agent import Agent, StepResult
+from adk.step import Step
 
-class ImageAnalysisAgent(Agent):
-    async def run(self, artifacts) -> StepResult:
-        print("⚠️ Starting image analysis... (simulated LRO)")  # LRO simulated
-        time.sleep(4)
+class ImageAnalysisAgent(Step):
+    def __init__(self):
+        super().__init__("image_analysis")
 
-        findings = {
-            "pathology": "Pneumothorax (Left Upper Lobe)",
-            "confidence": "95%"
-        }
-        return StepResult(output={"analysis_findings": findings})
+    def run(self, input_data):
+        return {"analysis": f"Processed {len(input_data)} images"}

@@ -12,3 +12,9 @@ class FunctionAgent:
 class Agent:
     async def run(self, artifacts):
         return {"mock": True}
+
+# src/adk/agent.py
+class StepResult:
+    def __init__(self, output):
+        self.output = output
+

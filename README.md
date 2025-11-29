@@ -19,19 +19,23 @@ pip install -r requirements.txt
 
 ## 📁 Repository Structure
 ```
-root/
-│
+radiology-adk-competition/
 ├── README.md
 ├── requirements.txt
-├── .gitignore
-└── src/
-    ├── agents/
-    │   ├── patient_context_agent.py
-    │   ├── image_analysis_agent.py
-    │   ├── report_generation_agent.py
-    │   ├── pathology_coding_agent.py
-    │   └── memory_consolidation_agent.py
-    └── master_agent.py
+├── src/
+│   ├── agents/
+│   │   ├── patient_context_agent.py
+│   │   ├── image_analysis_agent.py
+│   │   ├── report_generation_agent.py
+│   │   ├── pathology_coding_agent.py
+│   │   └── memory_consolidation_agent.py
+│   ├── adk/
+│   │   ├── __init__.py
+│   │   ├── agent.py
+│   │   └── step.py
+│   └── master_agent.py
+└── images
+
 ```
 ## Dataset / Images ![Dataset](https://img.shields.io/badge/Dataset-Figshare-blue)
 

@@ -1,7 +1,7 @@
-from adk.agent import Agent, StepResult
-
-class MemoryConsolidationAgent(Agent):
-    async def run(self, artifacts) -> StepResult:
-        final_report = artifacts.get('final_report')
+# src/agents/memory_consolidation_agent.py
+class MemoryConsolidationAgent:
+    def run(self, input_data):
+        # input_data is final_report
+        # Simulate saving facts to DB / memory
         print("💾 Important facts saved to long-term memory.")
-        return StepResult(output={"memory_status": "Consolidation Successful"})
+        return "Consolidation Successful"

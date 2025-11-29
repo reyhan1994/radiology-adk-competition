@@ -1,13 +1,13 @@
-from adk.agent import BaseAgent
+from adk.agent import SequentialAgent
+from adk.step import Step
 
-
-def retrieve_patient_history(patient_id: str):
-    # Simulate retrieving patient info from EMR
-    return {"patient_id": patient_id, "name": "Ali Ahmadi", "age": 45}
-
-class PatientContextAgent(BaseAgent):
+class PatientContextAgent(SequentialAgent):
     def __init__(self):
-        super().__init__(
-            name="patient_context_agent",
-            function=retrieve_patient_history
-        )
+        steps = [
+            Step(
+                name="extract_patient_context",
+                prompt="Extract patient age, sex, and clinical information from the radiology case.",
+                model="gpt-4o-mini"
+            )
+        ]
+        super().__init__(steps)

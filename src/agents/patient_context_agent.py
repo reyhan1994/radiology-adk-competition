@@ -1,13 +1,12 @@
-import time
-from adk.agent import Agent, StepResult
+from adk.agent import FunctionAgent
 
-class ImageAnalysisAgent(Agent):
-    async def run(self, artifacts) -> StepResult:
-        print("⚠️ Starting image analysis... (simulated LRO)")  # LRO simulated
-        time.sleep(4)
+def retrieve_patient_history(patient_id: str):
+    # Simulate retrieving patient info from EMR
+    return {"patient_id": patient_id, "name": "Ali Ahmadi", "age": 45}
 
-        findings = {
-            "pathology": "Pneumothorax (Left Upper Lobe)",
-            "confidence": "95%"
-        }
-        return StepResult(output={"analysis_findings": findings})
+class PatientContextAgent(FunctionAgent):
+    def __init__(self):
+        super().__init__(
+            name="patient_context_agent",
+            function=retrieve_patient_history
+        )

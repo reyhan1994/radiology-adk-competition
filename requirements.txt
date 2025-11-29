@@ -1,4 +1,7 @@
+torch           
+torchvision    
+pandas         
 numpy
-pandas
-torch
-opencv-python
+Pillow         
+requests       
+tqdm           

@@ -13,7 +13,8 @@ A conceptual multi-agent AI system for radiology image analysis, report generati
 pip install -r requirements.txt
 
 # 2. Run inference (replace PATH_TO_IMAGES with your data folder)
-python src/master_agent.py --input PATH_TO_IMAGES --output submission.csv```
+python src/master_agent.py --input PATH_TO_IMAGES --output submission.csv
+```
 
 
 ## 📁 Repository Structure

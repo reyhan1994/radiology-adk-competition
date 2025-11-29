@@ -33,6 +33,12 @@ root/
     │   └── memory_consolidation_agent.py
     └── master_agent.py
 ```
+## Dataset / Images ![Dataset](https://img.shields.io/badge/Dataset-Figshare-blue)
+
+The chest‑X‑ray images used in this project are sourced from the COVID‑19 Chest X‑Ray Image Repository — a public dataset hosted on Figshare.  
+Dataset link: [COVID-19 Chest X-Ray Image Repository](https://figshare.com/articles/dataset/COVID-19_Chest_X-Ray_Image_Repository/12580328)  
+
+License: CC‑BY 4.0
 
 
 

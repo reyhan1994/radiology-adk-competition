@@ -17,6 +17,7 @@ import sys
 import argparse
 import csv
 import traceback
+import asyncio
 
 # Ensure the current file's directory (src/) is on sys.path so "from agents..." works
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -73,38 +74,80 @@ def safe_get(d, *keys, default=None):
     return cur
 
 
+def _run_awaitable_or_value(value):
+    """Execute an awaitable/coroutine if needed, otherwise return value."""
+    if inspect.isawaitable(value):
+        try:
+            # try the simple approach
+            return asyncio.run(value)
+        except RuntimeError:
+            # event loop already running (e.g. notebook). Fallback: run in current loop.
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                # create a new loop in a thread is more robust, but here try run_until_complete
+                # This works when nest_asyncio is applied; otherwise advise running as script.
+                try:
+                    return loop.run_until_complete(value)
+                except Exception:
+                    # last resort: create a fresh loop in another thread
+                    new_loop = asyncio.new_event_loop()
+                    try:
+                        return new_loop.run_until_complete(value)
+                    finally:
+                        new_loop.close()
+            else:
+                return loop.run_until_complete(value)
+    else:
+        return value
+
 def run_workflow_for_image(master_agent, image_path):
     """
     Calls master_agent.run with initial artifacts {'user_request': image_path}
-    Expects a dict result (artifacts).
-    Returns artifacts dict (never raises unless something catastrophic happens).
+    Ensures any coroutine is awaited and returns a dict (artifacts).
     """
     initial = {"user_request": image_path}
     try:
-        # master_agent.run may be sync and return a dict
         result = master_agent.run(initial)
-        # result should be a dict
-        if not isinstance(result, dict):
-            # try to convert or wrap
-            return {"final_result": result}
-        return result
+        result = _run_awaitable_or_value(result)
+
+        # If result is not a dict but has an attribute like .output or .artifacts, try to normalize:
+        if isinstance(result, dict):
+            return result
+        # common wrappers: objects with .output or .artifacts
+        if hasattr(result, "output") and isinstance(result.output, dict):
+            return result.output
+        if hasattr(result, "artifacts") and isinstance(result.artifacts, dict):
+            return result.artifacts
+        # fallback: wrap whatever returned so CSV can at least record something
+        return {"final_result": str(result)}
     except Exception:
-        # capture a traceback string for logging in CSV if needed
         tb = traceback.format_exc()
         return {"error": tb}
 
 
+
+class SyncAgentWrapper:
+    """Wrap an agent instance so that .run(...) always executes awaitables and returns plain value."""
+    def __init__(self, agent):
+        self._agent = agent
+    def run(self, input_data):
+        out = self._agent.run(input_data)
+        return _run_awaitable_or_value(out)
+
 def build_master_agent():
-    """
-    Construct the list of Step objects using agent instances (not classes).
-    Important: Step signature in this repo is Step(name, agent_instance, input_key, output_key)
-    """
-    # create agent instances
+    # create original agent instances
     pat_agent = PatientContextAgent()
     img_agent = ImageAnalysisAgent()
     report_agent = ReportGenerationAgent()
     code_agent = PathologyCodingAgent()
     mem_agent = MemoryConsolidationAgent()
+
+    # wrap them to ensure sync behaviour
+    pat_agent = SyncAgentWrapper(pat_agent)
+    img_agent = SyncAgentWrapper(img_agent)
+    report_agent = SyncAgentWrapper(report_agent)
+    code_agent = SyncAgentWrapper(code_agent)
+    mem_agent = SyncAgentWrapper(mem_agent)
 
     # build steps (pass instances)
     steps = [
@@ -117,6 +160,7 @@ def build_master_agent():
 
     master = SequentialAgent(steps)
     return master
+
 
 
 def extract_row_from_artifacts(image_name, artifacts):
@@ -161,6 +205,7 @@ def main(input_folder, output_csv):
         image_path = os.path.join(input_folder, img)
         print(f"Processing: {image_path}")
         artifacts = run_workflow_for_image(master_agent, image_path)
+        print("-> artifacts returned:", artifacts)
         row = extract_row_from_artifacts(img, artifacts)
         rows.append(row)
 
